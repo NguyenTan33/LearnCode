@@ -17,9 +17,16 @@ namespace CSharpBasics
         }
 
         // Phương thức riêng của Laptop
-        public void UpgradeRam(int extraRam)
+        // Ghi đè lại hàm DisplayInfo của Cha
+        public override void DisplayInfo()
         {
-            Console.WriteLine($"thời hạn bảo hành của bạn là {Warranty}");
+            base.DisplayInfo(); // In phần chung của Cha trước
+            Console.WriteLine($" | [Bảo hành: {Warranty}]"); // In thêm phần riêng của Phụ kiện
+        }
+
+        public override decimal CalculateShippingFee()
+        {
+            return 15000m; // Phí ship phụ kiện là 15k
         }
     }
 }

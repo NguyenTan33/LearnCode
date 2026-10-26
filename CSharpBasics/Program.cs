@@ -22,8 +22,8 @@ namespace CSharpBasics
             //Bai3();
             //Bai4();
             //Bai5();
-            bai6();
-
+            //bai6();
+            bai7();
 
             Console.ReadLine();
         }
@@ -258,11 +258,8 @@ namespace CSharpBasics
 
             List<Product> products = new List<Product>
             {
-               new Product(1, "iPhone 15 Pro Max", 30000000m, 25),
-               new Product(2, "Samsung Galaxy Ultra", 25000000m, 30),
-               new Product(3, "Nokia 350", 5000000m, 50),
-               new Product(4, "Xiaomi V1", 10000000m, 40),
-               new Product(5, "OPPO A54", 7000000m, 35)
+                  new Laptop(2, "Dell XPS 15", 38000000m, 8, 32, "Intel Core i9"),
+                  new Accessory(3, "Tai nghe bluetooth", 300000m, 12, "Bảo hành 10 tháng"),
             };
 
             // VÒNG LẶP CHÍNH MUA SẮM
@@ -369,7 +366,6 @@ namespace CSharpBasics
         {
             List<Product> products = new List<Product>()
             {
-                  new Product(1, "iPhone 15 Pro Max", 30000000m, 10),
                   new Laptop(3, "Dell XPS 15", 38000000m, 8, 32, "Intel Core i9"),
                   new Accessory(1, "Tai nghe bluetooth", 300000m, 12, "Bảo hành 10 tháng"),
             };
@@ -385,6 +381,20 @@ namespace CSharpBasics
                 {
                     Console.WriteLine($"Bảo hành: {accessory.Warranty}");
                 }
+            }
+        }
+
+        public static void bai7()
+        {
+            List<Product> products = new List<Product>()
+            {
+                  new Laptop(2, "Dell XPS 15", 38000000m, 8, 32, "Intel Core i9"),
+                  new Accessory(3, "Tai nghe bluetooth", 300000m, 12, "Bảo hành 10 tháng"),
+            };
+
+            foreach (Product product in products)
+            {
+                product.DisplayInfo();
             }
         }
     }

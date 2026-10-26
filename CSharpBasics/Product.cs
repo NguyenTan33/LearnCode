@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CSharpBasics
 {
     // Bản thiết kế của một Sản phẩm
-    public class Product
+    public abstract class Product
     {
         // 1. Các thuộc tính (Properties) - Đặc điểm của sản phẩm
         public int Id { get; private set; }
@@ -25,10 +25,11 @@ namespace CSharpBasics
         }
 
         // 3. Phương thức (Method) - Hành động của sản phẩm
-        public void DisplayInfo()
+        public virtual void DisplayInfo()
         {
             Console.WriteLine($"[{Id}] {Name} | Giá: {Price:N0} VNĐ | Còn lại: {Quantity} chiếc | Trạng thái: {(Quantity > 0 ? "Còn hàng" : "Hết hàng")}");
         }
+        public abstract decimal CalculateShippingFee();
 
         // Hành động giảm tồn kho khi có khách mua
         public bool ReduceQuantity(int amount)

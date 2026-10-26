@@ -22,10 +22,16 @@ namespace CSharpBasics
         }
 
         // Phương thức riêng của Laptop
-        public void UpgradeRam(int extraRam)
+        public override void DisplayInfo()
         {
-            RamGB += extraRam;
+            base.DisplayInfo(); // In phần chung của Cha trước
             Console.WriteLine($"Đã nâng cấp RAM cho {Name}. RAM hiện tại: {RamGB}GB");
         }
+
+        public override decimal CalculateShippingFee()
+        {
+            return 50000m; // Phí ship laptop là 50k
+        }
+
     }
 }
