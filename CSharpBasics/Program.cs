@@ -17,7 +17,9 @@ namespace CSharpBasics
             Console.InputEncoding = System.Text.Encoding.UTF8;
 
             //Bai1();
-            Bai2();
+            //Bai2();
+            Bai3();
+
 
             Console.ReadLine();
         }
@@ -89,6 +91,74 @@ namespace CSharpBasics
 
         }
 
+        public static void Bai3()
+        {
+            string phoneName = "iPhone 15 Pro Max";
+            decimal price = 30000000m;
+            int quantity = 25;
+            decimal discountRate = 0.1m;
+            bool isAvailable = true;
+            decimal finalPrice = price * (1 - discountRate);
+            decimal totalPrice = 0;
 
+            vitrimualai:
+
+            if (!isAvailable)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Sản phẩm đã hết hàng!");
+                Console.ResetColor();
+                return;
+            }
+            int buyQuantity;
+            while (true)
+            {
+                Console.Write("Nhập số lượng bạn muốn mua: ");
+                if (int.TryParse(Console.ReadLine(), out buyQuantity) && buyQuantity > 0 && buyQuantity <= quantity)
+                {
+                    break; // Hợp lệ 100% thì thoát khỏi vòng lặp nhập liệu
+                }
+
+                // Nếu xuống được đây nghĩa là nhập sai:
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Vui lòng nhập số hợp lệ từ 1 đến {quantity}!");
+                Console.ResetColor();
+            }
+
+            if (buyQuantity < 3 && buyQuantity >= 1)
+            {
+                totalPrice = price * buyQuantity;
+            }
+            else
+            {
+                totalPrice = finalPrice * buyQuantity;
+            }
+
+            quantity -= buyQuantity;
+            isAvailable = quantity > 0;
+
+            Console.WriteLine("=== THÔNG TIN SẢN PHẨM ===");
+            Console.WriteLine($"Tên máy: {phoneName}");
+            Console.WriteLine($"Giá niêm yết: {price:N0} VNĐ");
+            Console.WriteLine($"Giảm giá: {discountRate * 100}%");
+            Console.WriteLine($"Giá khuyến mãi: {totalPrice:N0} VNĐ");
+            Console.WriteLine($"Số lượng còn lại: {quantity}");
+            Console.WriteLine($"Trạng thái: {(isAvailable ? "Còn hàng" : "Hết hàng")}");
+
+            Console.WriteLine("Bạn có muốn mua tiếp không Y/N ?");
+            string choice = Console.ReadLine();
+
+            switch (choice.ToLower())
+            {
+                case "y":
+                    goto vitrimualai;
+                case "n":
+                    Console.WriteLine("Cảm ơn bạn đã mua hàng!");
+                    break;
+                default:
+                    Console.WriteLine("Lựa chọn không hợp lệ. Kết thúc chương trình.");
+                    break;
+            }
+        }
     }
 }
