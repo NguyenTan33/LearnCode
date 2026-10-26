@@ -23,7 +23,8 @@ namespace CSharpBasics
             //Bai4();
             //Bai5();
             //bai6();
-            bai7();
+            //bai7();
+            bai8();
 
             Console.ReadLine();
         }
@@ -395,6 +396,32 @@ namespace CSharpBasics
             foreach (Product product in products)
             {
                 product.DisplayInfo();
+            }
+        }
+
+        public static void bai8()
+        {
+            List<Product> products = new List<Product>()
+            {
+   
+                new Laptop(2, "MacBook Pro M3", 45000000m, 5, 16, "M3 Pro"),
+                new Accessory(3, "Ốp lưng silicon", 150000m, 50, "Không bảo hành")
+            };
+
+            List<IRechargeable> chargingStation = new List<IRechargeable>();
+
+            foreach (Product p in products)
+            {
+                if (p is IRechargeable device)
+                {
+                    chargingStation.Add(device);
+                }
+            }
+
+            Console.WriteLine("=== THIẾT BỊ CẦN SẠC ===");
+            foreach (IRechargeable chargingstation in chargingStation)
+            {
+                chargingstation.Charge();
             }
         }
     }

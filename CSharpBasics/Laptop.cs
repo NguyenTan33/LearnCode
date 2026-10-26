@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CSharpBasics
 {
     // Laptop kế thừa từ Product (Laptop là một Sản phẩm)
-    public class Laptop : Product
+    public class Laptop : Product , IRechargeable
     {
         // Thuộc tính riêng của Laptop mà Điện thoại không có
         public int RamGB { get; set; }
@@ -33,5 +33,9 @@ namespace CSharpBasics
             return 50000m; // Phí ship laptop là 50k
         }
 
+        public void Charge()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
