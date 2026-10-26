@@ -21,7 +21,8 @@ namespace CSharpBasics
             //Bai2();
             //Bai3();
             //Bai4();
-            Bai5();
+            //Bai5();
+            bai6();
 
 
             Console.ReadLine();
@@ -359,6 +360,30 @@ namespace CSharpBasics
                 {
                     Console.WriteLine("Cảm ơn bạn đã mua hàng tại cửa hàng. Hẹn gặp lại!");
                     isShopping = false; // Thoát vòng lặp chính
+                }
+
+            }
+        }
+
+        public static void bai6()
+        {
+            List<Product> products = new List<Product>()
+            {
+                  new Product(1, "iPhone 15 Pro Max", 30000000m, 10),
+                  new Laptop(3, "Dell XPS 15", 38000000m, 8, 32, "Intel Core i9"),
+                  new Accessory(1, "Tai nghe bluetooth", 300000m, 12, "Bảo hành 10 tháng"),
+            };
+
+            foreach (Product product in products)
+            {
+                product.DisplayInfo();
+                if (product is Laptop laptop)
+                {
+                    Console.WriteLine($"RAM: {laptop.RamGB} GB, CPU: {laptop.Cpu}");
+                }
+                else if (product is Accessory accessory)
+                {
+                    Console.WriteLine($"Bảo hành: {accessory.Warranty}");
                 }
             }
         }

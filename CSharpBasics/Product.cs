@@ -10,10 +10,10 @@ namespace CSharpBasics
     public class Product
     {
         // 1. Các thuộc tính (Properties) - Đặc điểm của sản phẩm
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Price { get; set; }
-        public int Quantity { get; set; }
+        public int Id { get; private set; }
+        public string Name { get; private set; }
+        public decimal Price { get ;private set; }
+        public int Quantity { get; private set; }
 
         // 2. Constructor (Hàm khởi tạo) - Chạy mỗi khi tạo một sản phẩm mới bằng chữ "new"
         public Product(int id, string name, decimal price, int quantity)
