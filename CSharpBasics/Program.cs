@@ -24,8 +24,9 @@ namespace CSharpBasics
             //Bai5();
             //bai6();
             //bai7();
-            bai8();
-
+            //bai8();
+            //bai9();
+            bai10();
             Console.ReadLine();
         }
 
@@ -403,7 +404,7 @@ namespace CSharpBasics
         {
             List<Product> products = new List<Product>()
             {
-   
+
                 new Laptop(2, "MacBook Pro M3", 45000000m, 5, 16, "M3 Pro"),
                 new Accessory(3, "Ốp lưng silicon", 150000m, 50, "Không bảo hành")
             };
@@ -422,6 +423,49 @@ namespace CSharpBasics
             foreach (IRechargeable chargingstation in chargingStation)
             {
                 chargingstation.Charge();
+            }
+        }
+
+        public static void bai9()
+        {
+            List<Product> products = new List<Product>()
+            {
+                new Phone(1, "iPhone 15 Pro Max", 30000000m, 10, 4422),
+                new Laptop(2, "MacBook Pro M3", 45000000m, 5, 16, "M3 Pro"),
+                new Accessory(3, "Tai nghe Bluetooth", 500000m, 20, "12 tháng"),
+                new Phone(4, "Xiaomi Redmi Note 13", 4500000m, 15, 5000),
+                new Laptop(5, "Asus TUF Gaming", 22000000m, 0, 16, "Ryzen 7"), // Hết hàng
+                new Accessory(6, "Củ sạc 65W", 600000m, 0, "6 tháng") // Hết hàng
+            };
+
+            var hetHangProducts = products.Where(p => p.Quantity == 0).ToList();
+
+            var conHangProducts = products.Where(p => p.Quantity > 0 && p.Price >10000000m).ToList();
+
+            var conhangxapxeptangdan = products.Where(p => p.Quantity > 0).OrderBy(p => p.Price).ToList();
+            foreach (var product in conhangxapxeptangdan)
+            {
+                product.DisplayInfo();
+            }
+        }
+
+        public static void bai10()
+        {
+            List<Product> products = new List<Product>()
+            {
+                new Phone(1, "iPhone 15 Pro Max", 30000000m, 10, 4422),
+                new Laptop(2, "MacBook Pro M3", 45000000m, 5, 16, "M3 Pro"),
+                new Accessory(3, "Tai nghe Bluetooth", 500000m, 20, "12 tháng"),
+                new Phone(4, "Xiaomi Redmi Note 13", 4500000m, 15, 5000),
+                new Laptop(5, "Asus TUF Gaming", 22000000m, 0, 16, "Ryzen 7"), // Hết hàng
+                new Accessory(6, "Củ sạc 65W", 600000m, 0, "6 tháng") // Hết hàng
+            };
+            var hetHangProducts = products.Where(p => p.Quantity == 0).ToList();
+            var conHangProducts = products.Where(p => p.Quantity > 0 && p.Price >10000000m).ToList();
+            var conhangxapxeptangdan = products.Where(p => p.Quantity > 0).OrderBy(p => p.Price).ToList();
+            foreach (var product in conhangxapxeptangdan)
+            {
+                product.DisplayInfo();
             }
         }
     }
