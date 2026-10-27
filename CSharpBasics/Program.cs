@@ -460,13 +460,41 @@ namespace CSharpBasics
                 new Laptop(5, "Asus TUF Gaming", 22000000m, 0, 16, "Ryzen 7"), // Hết hàng
                 new Accessory(6, "Củ sạc 65W", 600000m, 0, "6 tháng") // Hết hàng
             };
-            var hetHangProducts = products.Where(p => p.Quantity == 0).ToList();
-            var conHangProducts = products.Where(p => p.Quantity > 0 && p.Price >10000000m).ToList();
-            var conhangxapxeptangdan = products.Where(p => p.Quantity > 0).OrderBy(p => p.Price).ToList();
-            foreach (var product in conhangxapxeptangdan)
+           
+            var nameProducts = products.Where(p => p.Quantity >0).Select(p => p.Name).ToList();
+
+            foreach (var name in nameProducts)
             {
-                product.DisplayInfo();
+                Console.WriteLine(name);
             }
+
+            Console.WriteLine("Nhập ID sản phẩm cần tìm kiếm: ");
+            int searchId = int.Parse(Console.ReadLine());
+            var searchProducts = products.FirstOrDefault(p => p.Id == searchId);
+
+            if (searchProducts != null)
+            {
+                searchProducts.DisplayInfo();
+            }
+            else
+            {
+                Console.WriteLine("Không tìm thấy sản phẩm với ID đã nhập.");
+            }
+
+            var searchProductsByQuantity = products.Any(p => p.Quantity == 0);
+
+            if (searchProductsByQuantity)
+            {
+                Console.WriteLine("Có sản phẩm đã hết hàng.");
+            }
+            else
+            {
+                Console.WriteLine("Tất cả sản phẩm đều còn hàng.");
+            }
+
+            var totalValue = products.Sum(p => p.Price * p.Quantity);
+
+            Console.WriteLine($"Tổng giá trị tồn kho: {totalValue:N0} VNĐ");
         }
     }
 }
