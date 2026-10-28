@@ -31,8 +31,8 @@ namespace CSharpBasics
             //bai12();
             //bai13().Wait();
             //Tram1_Dictionary();
-            Tram2_HashSet();
-
+            //Tram2_HashSet();
+            Tram3_Stack();
 
             Console.ReadLine();
         }
@@ -736,6 +736,49 @@ namespace CSharpBasics
             {
                 Console.WriteLine($"Khách hàng {khach} đã mua hàng cả tháng 9 và tháng 10.");
             }
+        }
+
+        public static void Tram3_Stack()
+        {
+            Console.WriteLine("Nhập một chuỗi chứa các dấu ngoặc: ");
+            string input = Console.ReadLine();
+            if (IsValid(input))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Chuỗi hợp lệ: Các dấu ngoặc được đóng mở đúng cách.");
+                Console.ResetColor();
+            }    
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Chuỗi không hợp lệ: Các dấu ngoặc không được đóng mở đúng cách.");
+                Console.ResetColor();
+            }    
+        }
+
+        public static bool IsValid(string s)
+        {
+            Stack<char> stack = new Stack<char>();
+           foreach (char c in s)
+           {
+                if ( c == '(' || c == '{' || c == '[')
+                {
+                    stack.Push(c);
+                }
+                if (c == ')' || c == '}' || c == ']')
+                {
+                    if (stack.Count == 0)
+                        return false;
+                    char top = stack.Pop();
+                    if ((c == ')' && top != '(') ||
+                        (c == '}' && top != '{') ||
+                        (c == ']' && top != '['))
+                    {
+                        return false;
+                    }
+                }
+           }
+            return stack.Count == 0;
         }
     }
 }
