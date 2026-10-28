@@ -28,7 +28,8 @@ namespace CSharpBasics
             //bai9();
             //bai10();
             //bai11();
-            bai12();
+            //bai12();
+            bai13().Wait();
             Console.ReadLine();
         }
 
@@ -614,6 +615,65 @@ namespace CSharpBasics
             // Bấm Ctrl + Z lần 2: Nhấc tiếp hành động trước đó ra:
             string undoneAction2 = historyActions.Pop();
             Console.WriteLine($"[CTRL + Z LẦN 2]: Đã hoàn tác -> '{undoneAction2}'");
+        }
+
+        public static async Task bai13()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=== BẮT ĐẦU HỆ THỐNG TỰ ĐỘNG HÓA ĐƠN HÀNG (BẤM PHÍM BẤT KỲ ĐỂ DỪNG) ===");
+            Console.ResetColor();
+
+            Queue<string> orderQueue = new Queue<string>();
+            bool isRunning = true;
+            int orderId = 1;
+
+            Task producer = Task.Run(async () =>
+            {
+                while (isRunning)
+                {
+                    await Task.Delay(1000); 
+                    string newOrder = $"Đơn hàng #{orderId++} lúc {DateTime.Now:HH:mm:ss}";
+
+
+                    lock (orderQueue)
+                    {
+                        orderQueue.Enqueue(newOrder);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"[+ KHÁCH ĐẶT]: {newOrder} (Hiện còn {orderQueue.Count} đơn chờ)");
+                    Console.ResetColor();
+                }
+            });
+
+          
+            Task consumer = Task.Run(async () =>
+            {
+                while (isRunning)
+                {
+                    await Task.Delay(1500);
+
+                    string processingOrder = null;
+                    lock (orderQueue) 
+                    {
+                        if (orderQueue.Count > 0)
+                        {
+                            processingOrder = orderQueue.Dequeue(); 
+                        }
+                    }
+
+                    if (processingOrder != null)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"   [-> SHIPPER GIAO]: {processingOrder}");
+                        Console.ResetColor();
+                    }
+                }
+            });
+
+            Console.ReadKey();
+            isRunning = false;
+            Console.WriteLine("\n[HỆ THỐNG ĐÃ DỪNG LẠI]");
         }
     }
 }
