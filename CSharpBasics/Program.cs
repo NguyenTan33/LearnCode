@@ -32,7 +32,8 @@ namespace CSharpBasics
             //bai13().Wait();
             //Tram1_Dictionary();
             //Tram2_HashSet();
-            Tram3_Stack();
+            //Tram3_Stack();
+            Tram4_Queue();
 
             Console.ReadLine();
         }
@@ -747,21 +748,21 @@ namespace CSharpBasics
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Chuỗi hợp lệ: Các dấu ngoặc được đóng mở đúng cách.");
                 Console.ResetColor();
-            }    
+            }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Chuỗi không hợp lệ: Các dấu ngoặc không được đóng mở đúng cách.");
                 Console.ResetColor();
-            }    
+            }
         }
 
         public static bool IsValid(string s)
         {
             Stack<char> stack = new Stack<char>();
-           foreach (char c in s)
-           {
-                if ( c == '(' || c == '{' || c == '[')
+            foreach (char c in s)
+            {
+                if (c == '(' || c == '{' || c == '[')
                 {
                     stack.Push(c);
                 }
@@ -777,8 +778,71 @@ namespace CSharpBasics
                         return false;
                     }
                 }
-           }
+            }
             return stack.Count == 0;
+        }
+
+        public static void Tram4_Queue()
+        {
+            int crurntTicketNumber = 1;
+            int choice = 0;
+            bool isRunning = true;
+
+            Queue<int> ticketQueue = new Queue<int>();
+
+            while (isRunning)
+            {
+                Console.WriteLine("=== HỆ THỐNG BỐC SỐ BỆNH VIỆN ===");
+                Console.WriteLine("1. [Bệnh nhân] Bấm lấy số thứ tự");
+                Console.WriteLine("2. [Bác sĩ] Bấm gọi bệnh nhân tiếp theo vào khám");
+                Console.WriteLine("3. [Y tá] Xem số lượng người đang chờ & ai là người kế tiếp");
+                Console.WriteLine("0. Kết thúc ca trực");
+                Console.Write("Chọn chức năng:");
+
+                while (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Chọn sai vui lòng chọn chức năng từ số 0 - > 3");
+                    Console.ResetColor();
+                }
+                switch (choice)
+                {
+                    case 1:
+                        ticketQueue.Enqueue(crurntTicketNumber);
+                        crurntTicketNumber++;
+                        break;
+                    case 2:
+                        if (ticketQueue.Count <= 0)
+                        {
+                            Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Xin mời khách hàng tiếp theo là số: {ticketQueue.Dequeue()}");
+                        }
+                        break;
+                    case 3:
+                        if (ticketQueue.Count <= 0)
+                        {
+                            Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Khách hàng tiếp theo là số: {ticketQueue.Peek()}");
+                        }
+                        break;
+                    case 0:
+                        Console.WriteLine("Kết thúc ca trực.");
+                        isRunning = false;
+                        return;
+                    default:
+                        Console.WriteLine("Lựa chọn không hợp lệ. Vui lòng thử lại từ 0 -> 3.");
+                        break;
+                }
+                Console.WriteLine($"\n\n\n\n");
+
+            }
+           
         }
     }
 }
