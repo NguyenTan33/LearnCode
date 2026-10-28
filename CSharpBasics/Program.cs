@@ -26,7 +26,9 @@ namespace CSharpBasics
             //bai7();
             //bai8();
             //bai9();
-            bai10();
+            //bai10();
+            //bai11();
+            bai12();
             Console.ReadLine();
         }
 
@@ -440,7 +442,7 @@ namespace CSharpBasics
 
             var hetHangProducts = products.Where(p => p.Quantity == 0).ToList();
 
-            var conHangProducts = products.Where(p => p.Quantity > 0 && p.Price >10000000m).ToList();
+            var conHangProducts = products.Where(p => p.Quantity > 0 && p.Price > 10000000m).ToList();
 
             var conhangxapxeptangdan = products.Where(p => p.Quantity > 0).OrderBy(p => p.Price).ToList();
             foreach (var product in conhangxapxeptangdan)
@@ -460,8 +462,8 @@ namespace CSharpBasics
                 new Laptop(5, "Asus TUF Gaming", 22000000m, 0, 16, "Ryzen 7"), // Hết hàng
                 new Accessory(6, "Củ sạc 65W", 600000m, 0, "6 tháng") // Hết hàng
             };
-           
-            var nameProducts = products.Where(p => p.Quantity >0).Select(p => p.Name).ToList();
+
+            var nameProducts = products.Where(p => p.Quantity > 0).Select(p => p.Name).ToList();
 
             foreach (var name in nameProducts)
             {
@@ -495,6 +497,123 @@ namespace CSharpBasics
             var totalValue = products.Sum(p => p.Price * p.Quantity);
 
             Console.WriteLine($"Tổng giá trị tồn kho: {totalValue:N0} VNĐ");
+        }
+
+        public static void bai11()
+        {
+            int Id;
+
+            List<Product> products = new List<Product>()
+            {
+                new Phone(101, "iPhone 15 Pro Max", 30000000m, 10, 4422),
+                new Laptop(102, "MacBook Pro M3", 45000000m, 5, 16, "M3 Pro"),
+                new Accessory(103, "Tai nghe Bluetooth", 500000m, 20, "12 tháng"),
+                new Phone(104, "Xiaomi Redmi Note 13", 4500000m, 15, 5000),
+                new Laptop(105, "Asus TUF Gaming", 22000000m, 8, 16, "Ryzen 7"),
+                new Accessory(106, "Củ sạc 65W", 600000m, 30, "6 tháng")
+            };
+
+            Dictionary<int, Product> productDict = products.ToDictionary(p => p.Id);
+
+            foreach (var product in productDict.Keys)
+            {
+                Console.Write($"{product} ");
+            }
+
+            Console.WriteLine("\nNhập ID sản phẩm cần tìm kiếm: ");
+            while (!int.TryParse(Console.ReadLine(), out Id) || Id < 0)
+            {
+                Console.WriteLine("Vui lòng nhập một số nguyên hợp lệ lớn hơn hoặc bằng 0.");
+            }
+
+            if (productDict.TryGetValue(Id, out Product foundProduct))
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\n[TÌM THẤY TỨC THÌ TRONG 0.000001 GIÂY]:");
+                Console.ResetColor();
+                foundProduct.DisplayInfo();
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nKhông tìm thấy sản phẩm nào có ID = {Id} trong từ điển!");
+                Console.ResetColor();
+            }
+        }
+
+        public static void bai12()
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("=== 1. THỬ NGHIỆM HASHSET (CHỐNG TRÙNG LẶP & BLACKLIST) ===");
+            Console.ResetColor();
+
+            List<string> rawEmails = new List<string>()
+            {
+                "tuan@gmail.com",
+                "lan@yahoo.com",
+                "tuan@gmail.com", // Trùng
+                "spam_bot@darkweb.com",
+                "tuan@gmail.com"  
+            };
+
+           
+            HashSet<string> cleanEmails = new HashSet<string>(rawEmails);
+
+            Console.WriteLine($"Số email thô ban đầu: {rawEmails.Count}");
+            Console.WriteLine($"Số email sạch sau khi lọc bằng HashSet: {cleanEmails.Count}");
+
+       
+            HashSet<string> blacklist = new HashSet<string>() { "spam_bot@darkweb.com", "hacker@evil.com" };
+
+            string checkEmail = "spam_bot@darkweb.com";
+            if (blacklist.Contains(checkEmail)) // Kiểm tra tốc độ O(1)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"[CẢNH BÁO]: Email '{checkEmail}' nằm trong Blacklist, cấm nhận quà!");
+                Console.ResetColor();
+            }
+
+
+           
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n=== 2. THỬ NGHIỆM QUEUE (XỬ LÝ ĐƠN HÀNG TUẦN TỰ) ===");
+            Console.ResetColor();
+
+            Queue<string> orderQueue = new Queue<string>();
+
+
+            orderQueue.Enqueue("Đơn #1: iPhone 15 của Anh Tuấn");
+            orderQueue.Enqueue("Đơn #2: MacBook Pro của Chị Lan");
+            orderQueue.Enqueue("Đơn #3: Tai nghe Sony của Em Nam");
+
+            while (orderQueue.Count > 0)
+            {
+                string currentOrder = orderQueue.Dequeue(); // Lấy người đầu hàng ra
+                Console.WriteLine($"-> Đang đóng gói và gửi đi: {currentOrder}");
+            }
+
+
+            
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("\n=== 3. THỬ NGHIỆM STACK (TÍNH NĂNG HOÀN TÁC CTRL + Z) ===");
+            Console.ResetColor();
+
+            Stack<string> historyActions = new Stack<string>();
+
+
+            historyActions.Push("Bước 1: Mở ứng dụng");
+            historyActions.Push("Bước 2: Gõ chữ 'Xin chào'");
+            historyActions.Push("Bước 3: Lỡ tay bấm nhầm nút 'Xóa bài viết'"); // Hành động mới nhất nằm trên đỉnh ống!
+
+
+            string undoneAction1 = historyActions.Pop();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"[CTRL + Z LẦN 1]: Đã hoàn tác -> '{undoneAction1}'");
+            Console.ResetColor();
+
+            // Bấm Ctrl + Z lần 2: Nhấc tiếp hành động trước đó ra:
+            string undoneAction2 = historyActions.Pop();
+            Console.WriteLine($"[CTRL + Z LẦN 2]: Đã hoàn tác -> '{undoneAction2}'");
         }
     }
 }
