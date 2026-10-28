@@ -29,7 +29,11 @@ namespace CSharpBasics
             //bai10();
             //bai11();
             //bai12();
-            bai13().Wait();
+            //bai13().Wait();
+            //Tram1_Dictionary();
+            Tram2_HashSet();
+
+
             Console.ReadLine();
         }
 
@@ -554,16 +558,16 @@ namespace CSharpBasics
                 "lan@yahoo.com",
                 "tuan@gmail.com", // Trùng
                 "spam_bot@darkweb.com",
-                "tuan@gmail.com"  
+                "tuan@gmail.com"
             };
 
-           
+
             HashSet<string> cleanEmails = new HashSet<string>(rawEmails);
 
             Console.WriteLine($"Số email thô ban đầu: {rawEmails.Count}");
             Console.WriteLine($"Số email sạch sau khi lọc bằng HashSet: {cleanEmails.Count}");
 
-       
+
             HashSet<string> blacklist = new HashSet<string>() { "spam_bot@darkweb.com", "hacker@evil.com" };
 
             string checkEmail = "spam_bot@darkweb.com";
@@ -575,7 +579,7 @@ namespace CSharpBasics
             }
 
 
-           
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\n=== 2. THỬ NGHIỆM QUEUE (XỬ LÝ ĐƠN HÀNG TUẦN TỰ) ===");
             Console.ResetColor();
@@ -594,7 +598,7 @@ namespace CSharpBasics
             }
 
 
-            
+
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\n=== 3. THỬ NGHIỆM STACK (TÍNH NĂNG HOÀN TÁC CTRL + Z) ===");
             Console.ResetColor();
@@ -631,7 +635,7 @@ namespace CSharpBasics
             {
                 while (isRunning)
                 {
-                    await Task.Delay(1000); 
+                    await Task.Delay(1000);
                     string newOrder = $"Đơn hàng #{orderId++} lúc {DateTime.Now:HH:mm:ss}";
 
 
@@ -646,7 +650,7 @@ namespace CSharpBasics
                 }
             });
 
-          
+
             Task consumer = Task.Run(async () =>
             {
                 while (isRunning)
@@ -654,11 +658,11 @@ namespace CSharpBasics
                     await Task.Delay(1500);
 
                     string processingOrder = null;
-                    lock (orderQueue) 
+                    lock (orderQueue)
                     {
                         if (orderQueue.Count > 0)
                         {
-                            processingOrder = orderQueue.Dequeue(); 
+                            processingOrder = orderQueue.Dequeue();
                         }
                     }
 
@@ -674,6 +678,64 @@ namespace CSharpBasics
             Console.ReadKey();
             isRunning = false;
             Console.WriteLine("\n[HỆ THỐNG ĐÃ DỪNG LẠI]");
+        }
+
+        public static void Tram1_Dictionary()
+        {
+            string text = "apple banana apple orange banana apple kiwi orange apple";
+
+            string[] words = text.Split(' ');
+
+            Dictionary<string, int> wordCount = new Dictionary<string, int>();
+
+            Console.WriteLine("=== SỐ LẦN XUẤT HIỆN CỦA TỪ ===");
+            foreach (string word in words)
+            {
+                if (wordCount.ContainsKey(word))
+                {
+                    wordCount[word]++;
+                }
+                else
+                {
+                    wordCount[word] = 1;
+                }
+            }
+
+            foreach (var kvp in wordCount)
+            {
+                Console.WriteLine($"{kvp.Key}    : xuất hiện {kvp.Value} lần.");
+            }
+        }
+
+
+        public static void Tram2_HashSet()
+        {
+            int[] transactions = { 101, 105, 103, 102, 105, 108, 101 };
+
+            HashSet<int> uniqueTransactions = new HashSet<int>();
+
+            foreach (int id in transactions)
+            {
+                if (!uniqueTransactions.Add(id))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"[CẢNH BÁO]: Giao dịch trùng lặp ID = {id} đã bị bỏ qua!");
+                    Console.ResetColor();
+                    break;
+                }
+            }
+
+            List<string> khachThang9 = new List<string>() { "0901", "0902", "0903", "0904" };
+            List<string> khachThang10 = new List<string>() { "0903", "0905", "0901", "0906" };
+
+            HashSet<string> khachThang9Set = new HashSet<string>(khachThang9);
+
+            khachThang9Set.IntersectWith(khachThang10);
+
+            foreach (string khach in khachThang9Set)
+            {
+                Console.WriteLine($"Khách hàng {khach} đã mua hàng cả tháng 9 và tháng 10.");
+            }
         }
     }
 }
