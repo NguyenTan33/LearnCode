@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CSharpBasics
@@ -33,7 +35,8 @@ namespace CSharpBasics
             //Tram1_Dictionary();
             //Tram2_HashSet();
             //Tram3_Stack();
-            Tram4_Queue();
+            //Tram4_Queue();
+            OnTap_4CauTrucDuLieu();
 
             Console.ReadLine();
         }
@@ -842,7 +845,226 @@ namespace CSharpBasics
                 Console.WriteLine($"\n\n\n\n");
 
             }
-           
+
+        }
+
+        public static void OnTap_4CauTrucDuLieu()
+        {
+            bool isRunning = true;
+            List<string> customersName = new List<string>() { "Anh Tuấn", "Chị Lan", "Em Nam", "Cô Mai" };
+            List<string> Rank = new List<string>() { "VIP", "STANDARD", "ECONOMY", "COUPLE" };
+            List<decimal> ticketPrices = new List<decimal>() { 500_000m, 150_000m, 200_000m, 350_000m };
+            Queue<string> ticketQueue = new Queue<string>();
+            Stack<string> paymentHistory = new Stack<string>();
+            HashSet<string> scannedTickets = new HashSet<string>();
+            List<string> ticketCode = new List<string> { "TICKET12345", "TICKET123456", "TICKET889", "TICKET555" };
+
+            VanHanh vanHanh = new VanHanh();
+
+            while (isRunning)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("===== HỆ THỐNG RẠP CHIẾU PHIM =====");
+                Console.ResetColor();
+                Console.WriteLine("1. Thêm khách hàng vào hàng đợi");
+                Console.WriteLine("2. Gọi khách hàng tiếp theo");
+                Console.WriteLine("3. Hiển thị danh sách khách hàng đang chờ");
+                Console.WriteLine("4. Hiển thị số lượng khách hàng đang chờ");
+                Console.WriteLine("5. Hiển thị khách hàng tiếp theo");
+                Console.WriteLine("6. Hiển thị thông tin giá vé theo hạng");
+                Console.WriteLine("7. Hoàn tiền cho khách hàng");
+                Console.WriteLine("8. Soát vé cho khách hàng");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("0. Thoát chương trình");
+                Console.ResetColor();
+                Console.Write("Chọn chức năng: ");
+                int choice;
+
+                while (!int.TryParse(Console.ReadLine(), out choice))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Chọn sai vui lòng chọn chức năng từ số 0 - > 8");
+                    Console.ResetColor();
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        vanHanh.ThemKhach(customersName, ticketQueue);
+                        break;
+                    case 2:
+                        string nameCustomerNext = vanHanh.GoiKhach(ticketQueue);
+                        if (nameCustomerNext != null)
+                        {
+                            vanHanh.HistoryActions(paymentHistory, nameCustomerNext);
+                        }
+                        break;
+                    case 3:
+                        vanHanh.HienThiDanhSachKhach(ticketQueue);
+                        break;
+                    case 4:
+                        vanHanh.HienThiSoLuongKhach(ticketQueue);
+                        break;
+                    case 5:
+                        vanHanh.HienThiKhachTiepTheo(ticketQueue);
+                        break;
+                    case 6:
+                        vanHanh.DisplayTicketInfo(Rank, ticketPrices);
+                        break;
+                    case 7:
+                        vanHanh.HoanTien(paymentHistory);
+                        break;
+                    case 8:
+                        Console.Write("Nhập mã vé cần soát: ");
+                        string inputTicketCode = Console.ReadLine();
+                        if (vanHanh.XemVeCoTonTai(ticketCode, inputTicketCode))
+                        {
+                            vanHanh.SoatVe(scannedTickets, inputTicketCode);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Vé {inputTicketCode} không tồn tại trong danh sách.");
+                        }    
+                        break;
+                    case 0:
+                        Console.WriteLine("Thoát chương trình.");
+                        isRunning = false;
+                        break;
+                    default:
+                        Console.WriteLine("Lựa chọn không hợp lệ. Vui lòng thử lại từ 0 -> 8.");
+                        break;
+                }
+
+                Console.WriteLine($"\n\n");
+                Thread.Sleep(1000);
+            }
+
+
+        }
+    }
+    public class VanHanh
+    {
+
+        public void ThemKhach(List<string> customersName, Queue<string> ticketQueue)
+        {
+
+            foreach (string name in customersName)
+            {
+                ticketQueue.Enqueue(name);
+            }
+
+        }
+
+        public string GoiKhach(Queue<string> ticketQueue)
+        {
+            if (ticketQueue.Count > 0)
+            {
+                string nextCustomer = ticketQueue.Dequeue();
+                Console.WriteLine($"Xin mời khách hàng tiếp theo là: {nextCustomer}");
+                return nextCustomer;
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
+                Console.ResetColor();
+                return null;
+            }
+        }
+
+        public void HienThiDanhSachKhach(Queue<string> ticketQueue)
+        {
+            if (ticketQueue.Count > 0)
+            {
+                Console.WriteLine("=== DANH SÁCH KHÁCH HÀNG ĐANG CHỜ ===");
+                foreach (string customer in ticketQueue)
+                {
+                    Console.WriteLine($"- {customer}");
+                }
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
+                Console.ResetColor();
+            }
+        }
+        public void HienThiSoLuongKhach(Queue<string> ticketQueue)
+        {
+            Console.WriteLine($"Hiện tại có {ticketQueue.Count} khách hàng đang chờ.");
+        }
+
+        public void HienThiKhachTiepTheo(Queue<string> ticketQueue)
+        {
+            if (ticketQueue.Count > 0)
+            {
+                Console.WriteLine($"Khách hàng tiếp theo là: {ticketQueue.Peek()}");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
+                Console.ResetColor();
+            }
+        }
+
+        public void DisplayTicketInfo(List<string> Rank, List<decimal> ticketPrices)
+        {
+            Dictionary<string, decimal> boardticketPrice = new Dictionary<string, decimal>();
+
+            for (int i = 0; i < Rank.Count; i++)
+            {
+                boardticketPrice[Rank[i]] = ticketPrices[i];
+            }
+
+            Console.WriteLine("=== DANH SÁCH GIÁ VÉ THEO HẠNG ===");
+            foreach (var kvp in boardticketPrice)
+            {
+                Console.WriteLine($"Hạng: {kvp.Key} - Giá vé: {kvp.Value:N0} VNĐ");
+            }
+        }
+
+        public void HistoryActions(Stack<string> paymentHistory, string nameCustomerNext)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            paymentHistory.Push($"Khách hàng {nameCustomerNext} đã mua vé");
+            Console.ResetColor();
+        }
+
+        public void HoanTien(Stack<string> paymentHistory)
+        {
+            if (paymentHistory.Count <= 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Không có giao dịch nào để hoàn tiền.");
+                Console.ResetColor();
+                return;
+            }
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Hoàn tiền thành công cho {paymentHistory.Pop()}.");
+            Console.ResetColor();
+        }
+
+        public void SoatVe(HashSet<string> scannedTickets, string ticketCode)
+        {
+            if (scannedTickets.Contains(ticketCode))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Vé {ticketCode} đã được quét trước đó. Không hợp lệ.");
+                Console.ResetColor();
+            }
+            else
+            {
+                scannedTickets.Add(ticketCode);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Vé {ticketCode} hợp lệ. Chúc quý khách xem phim vui vẻ!");
+                Console.ResetColor();
+            }
+        }
+
+        public bool XemVeCoTonTai(List<string> codeTicket, string scanCode)
+        {
+            return codeTicket.Contains(scanCode);
         }
     }
 }
