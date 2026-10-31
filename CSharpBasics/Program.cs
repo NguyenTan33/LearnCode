@@ -36,7 +36,9 @@ namespace CSharpBasics
             //Tram2_HashSet();
             //Tram3_Stack();
             //Tram4_Queue();
-            OnTap_4CauTrucDuLieu();
+            //OnTap_4CauTrucDuLieu();
+            //TwoPointer_1();
+            TwoPointer_2();
 
             Console.ReadLine();
         }
@@ -924,7 +926,7 @@ namespace CSharpBasics
                         else
                         {
                             Console.WriteLine($"Vé {inputTicketCode} không tồn tại trong danh sách.");
-                        }    
+                        }
                         break;
                     case 0:
                         Console.WriteLine("Thoát chương trình.");
@@ -938,133 +940,69 @@ namespace CSharpBasics
                 Console.WriteLine($"\n\n");
                 Thread.Sleep(1000);
             }
-
-
-        }
-    }
-    public class VanHanh
-    {
-
-        public void ThemKhach(List<string> customersName, Queue<string> ticketQueue)
-        {
-
-            foreach (string name in customersName)
-            {
-                ticketQueue.Enqueue(name);
-            }
-
         }
 
-        public string GoiKhach(Queue<string> ticketQueue)
+
+
+        public static void TwoPointer_1()
         {
-            if (ticketQueue.Count > 0)
+            int[] arr = { 10, 20, 30, 40, 50, 60 };
+
+            int left = 0;
+            int right = arr.Length - 1;
+
+            while(left<right)
             {
-                string nextCustomer = ticketQueue.Dequeue();
-                Console.WriteLine($"Xin mời khách hàng tiếp theo là: {nextCustomer}");
-                return nextCustomer;
-            }
-            else
+                int temp = arr[left];
+                arr[left] = arr[right];
+                arr[right] = temp;
+
+                left++;
+                right--;
+            }    
+            foreach (var x in arr)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
-                Console.ResetColor();
-                return null;
-            }
+                Console.Write($"{x} ");
+            }    
         }
 
-        public void HienThiDanhSachKhach(Queue<string> ticketQueue)
+        public static void TwoPointer_2()
         {
-            if (ticketQueue.Count > 0)
+            string[] Palindrome = new string[] { "mad1m","racecar", "noon", "radar" };
+            
+
+            foreach (var x in Palindrome)
             {
-                Console.WriteLine("=== DANH SÁCH KHÁCH HÀNG ĐANG CHỜ ===");
-                foreach (string customer in ticketQueue)
+                if(!CheckPalindrome(x))
                 {
-                    Console.WriteLine($"- {customer}");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Chữ {x} không đối xứng");
+                    Console.ResetColor();
+                }    
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"Chữ {x} đối xứng");
+                    Console.ResetColor();
+                }    
+            }    
+        }
+
+        public static bool CheckPalindrome(string x)
+        {
+            int left = 0;
+            int right = x.Length - 1;
+            while (left < right)
+            {
+                if (!x[left].Equals(x[right]))
+                {
+                    return false;
                 }
+                left++;
+                right--;
             }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
-                Console.ResetColor();
-            }
-        }
-        public void HienThiSoLuongKhach(Queue<string> ticketQueue)
-        {
-            Console.WriteLine($"Hiện tại có {ticketQueue.Count} khách hàng đang chờ.");
-        }
-
-        public void HienThiKhachTiepTheo(Queue<string> ticketQueue)
-        {
-            if (ticketQueue.Count > 0)
-            {
-                Console.WriteLine($"Khách hàng tiếp theo là: {ticketQueue.Peek()}");
-            }
-            else
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Hiện tại chưa có khách hàng nào lấy số thứ tự.");
-                Console.ResetColor();
-            }
-        }
-
-        public void DisplayTicketInfo(List<string> Rank, List<decimal> ticketPrices)
-        {
-            Dictionary<string, decimal> boardticketPrice = new Dictionary<string, decimal>();
-
-            for (int i = 0; i < Rank.Count; i++)
-            {
-                boardticketPrice[Rank[i]] = ticketPrices[i];
-            }
-
-            Console.WriteLine("=== DANH SÁCH GIÁ VÉ THEO HẠNG ===");
-            foreach (var kvp in boardticketPrice)
-            {
-                Console.WriteLine($"Hạng: {kvp.Key} - Giá vé: {kvp.Value:N0} VNĐ");
-            }
-        }
-
-        public void HistoryActions(Stack<string> paymentHistory, string nameCustomerNext)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            paymentHistory.Push($"Khách hàng {nameCustomerNext} đã mua vé");
-            Console.ResetColor();
-        }
-
-        public void HoanTien(Stack<string> paymentHistory)
-        {
-            if (paymentHistory.Count <= 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Không có giao dịch nào để hoàn tiền.");
-                Console.ResetColor();
-                return;
-            }
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine($"Hoàn tiền thành công cho {paymentHistory.Pop()}.");
-            Console.ResetColor();
-        }
-
-        public void SoatVe(HashSet<string> scannedTickets, string ticketCode)
-        {
-            if (scannedTickets.Contains(ticketCode))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Vé {ticketCode} đã được quét trước đó. Không hợp lệ.");
-                Console.ResetColor();
-            }
-            else
-            {
-                scannedTickets.Add(ticketCode);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Vé {ticketCode} hợp lệ. Chúc quý khách xem phim vui vẻ!");
-                Console.ResetColor();
-            }
-        }
-
-        public bool XemVeCoTonTai(List<string> codeTicket, string scanCode)
-        {
-            return codeTicket.Contains(scanCode);
+            return true;
         }
     }
+
 }
