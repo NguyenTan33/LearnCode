@@ -38,7 +38,9 @@ namespace CSharpBasics
             //Tram4_Queue();
             //OnTap_4CauTrucDuLieu();
             //TwoPointer_1();
-            TwoPointer_2();
+            //TwoPointer_2();
+            //TwoPointer_3();
+            TwoPointer_4();
 
             Console.ReadLine();
         }
@@ -994,7 +996,7 @@ namespace CSharpBasics
             int right = x.Length - 1;
             while (left < right)
             {
-                if (!x[left].Equals(x[right]))
+                if (x[left] != (x[right]))
                 {
                     return false;
                 }
@@ -1003,6 +1005,50 @@ namespace CSharpBasics
             }
             return true;
         }
-    }
 
+        public static void TwoPointer_3()
+        {
+            int[] numbers = { 1, 3, 4, 6, 8, 11, 15 };
+            int target = 14; // (Ta thấy 3 + 11 = 14 hoặc 6 + 8 = 14)
+            int left = 0;
+            int right = numbers.Length - 1;
+            while (left < right)
+            {
+                if (numbers[left] + numbers[right] == target)
+                {
+                    Console.WriteLine($"Tìm thấy cặp số: {numbers[left]} + {numbers[right]} = {target}");
+                    left++;
+                    right--;
+                }
+                if (numbers[left] + numbers[right] > target)
+                {
+                    right--;
+                }    
+                else
+                {
+                    left++;
+                }
+            }    
+        }
+
+        public static void TwoPointer_4()
+        {
+            int[] nums = { 0, 1, 0, 3, 12, 0, 5, 0, 0, 0, 0, 0, 0, 0, 9};
+            int slow = 0;
+            for (int fast = 0; fast < nums.Length; fast ++)
+            {
+                if (nums[fast] != 0)
+                {
+                    int temp = nums[slow];
+                    nums[slow] = nums[fast];
+                    nums[fast] = temp;
+                    slow++;
+                }    
+            }
+            foreach (var num in nums)
+            {
+                Console.Write($"{num} ");
+            }    
+        }
+    }
 }
